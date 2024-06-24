@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador Léxico, Sintáctico y Semántico</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+        }
+        .container {
+            background-color: #34495e;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 900px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .editor textarea {
+            width: 100%;
+            height: 200px;
+            background-color: #1abc9c;
+            color: #2c3e50;
+            border: none;
+            padding: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .buttons button {
+            background-color: #e74c3c;
+            color: #ecf0f1;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .buttons button:hover {
+            background-color: #c0392b;
+        }
+        .results {
+            width: 100%;
+        }
+        .results div {
+            background-color: #1abc9c;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: auto;
+        }
+        pre {
+            background-color: #1abc9c;
+            padding: 10px;
+            border-radius: 5px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Analizador Léxico, Sintáctico y Semántico</h1>
+        <div class="editor">
+            <textarea id="codeInput" rows="10" cols="50"></textarea>
+        </div>
+        <div class="buttons">
+            <button onclick="analyzeLexical()">Analizar Léxico</button>
+            <button onclick="analyzeSyntactic()">Analizar Sintáctico</button>
+            <button onclick="analyzeSemantic()">Analizar Semántico</button>
+        </div>
+        <div class="results">
+            <div><h2>Análisis Léxico</h2><pre id="lexicalResult"></pre></div>
+            <div><h2>Análisis Sintáctico</h2><pre id="syntacticResult"></pre></div>
+            <div><h2>Análisis Semántico</h2><pre id="semanticResult"></pre></div>
+        </div>
+    </div>
+    <script>
+        function analyzeLexical() {
+            const code = document.getElementById("codeInput").value;
+            fetch('/lexical', {
+                method: 'POST',
+                body: JSON.stringify({ code: code }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("lexicalResult").textContent = data.result;
+            });
+        }
+
+        function analyzeSyntactic() {
+            const code = document.getElementById("codeInput").value;
+            fetch('/syntactic', {
+                method: 'POST',
+                body: JSON.stringify({ code: code }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("syntacticResult").textContent = data.result;
+            });
+        }
+
+        function analyzeSemantic() {
+            const code = document.getElementById("codeInput").value;
+            fetch('/semantic', {
+                method: 'POST',
+                body: JSON.stringify({ code: code }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("semanticResult").textContent = data.result;
+            });
+        }
+    </script>
+</body>
+</html>
